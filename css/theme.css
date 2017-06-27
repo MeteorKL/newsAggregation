@@ -1,0 +1,109 @@
+
+body {
+    font-family: PingFang SC,Hiragino Sans GB,Microsoft YaHei,WenQuanYi Micro Hei,Helvetica Neue,Arial,sans-serif;
+    font-size: 12px;
+    line-height: 1.5;
+    color: #657180;
+    background-color: #fff;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+article, aside, blockquote, body, button, dd, details, div, dl, dt, fieldset, figcaption, figure, footer, form, h1, h2, h3, h4, h5, h6, header, hgroup, hr, input, legend, li, menu, nav, ol, p, section, td, textarea, th, ul {
+    margin: 0;
+    padding: 0;
+}
+blockquote, body, button, caption, dd, div, dl, dt, fieldset, figure, form, h1, h2, h3, h4, h5, h6, hr, html, input, legend, li, menu, ol, p, pre, table, td, textarea, th, ul {
+    margin: 0;
+    padding: 0;
+}
+*, :after, :before {
+    box-sizing: border-box;
+}
+* {
+    -webkit-tap-highlight-color: transparent;
+}
+a {
+    color: #222;
+    background: 0 0;
+    text-decoration: none;
+    outline: 0;
+    cursor: pointer;
+    transition: color .2s ease;
+}
+a:visited {
+    color: #999;
+}
+li {
+    list-style: none;
+}
+ol, ul {
+    list-style: none;
+}
+.clearfix {
+    zoom: 1;
+}
+.clearfix:after, .clearfix:before {
+    content: "";
+    display: table;
+}
+.clearfix:after {
+    display: block;
+    content: "";
+    clear: both;
+}
+
+.clearfix:after {
+    visibility: hidden;
+    font-size: 0;
+    height: 0;
+}
+.left {
+    float: left;
+}
+.right {
+    float: right;
+}
+a, a:hover, del, ins, s, u {
+    text-decoration: none;
+}
+a, button {
+    cursor: pointer;
+}
+a {
+    color: #222;
+}
+body, button, input, keygen, legend, select, textarea {
+    font: 12px/1.14 "PingFang SC","Hiragino Sans GB","Microsoft YaHei","WenQuanYi Micro Hei","Helvetica Neue",Arial,sans-serif;
+    -webkit-font-smoothing: antialiased;
+    color: #333;
+    outline: 0;
+}
+.bui-box {
+    display: block;
+    zoom: 1;
+}
+.bui-box:after, .bui-box:before {
+    content: "";
+    display: table;
+}
+*, :after, :before {
+    box-sizing: border-box;
+}
+.bui-left {
+    float: left;
+}
+img {
+    border-style: none;
+}
+.bui-box:after {
+    visibility: hidden;
+    font-size: 0;
+    height: 0;
+    display: block;
+    content: "";
+    clear: both;
+}
+.bui-box:after, .bui-box:before {
+    content: "";
+    display: table;
+}
