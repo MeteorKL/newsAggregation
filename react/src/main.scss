@@ -1,0 +1,59 @@
+.left {
+    float: left;
+}
+.right {
+    float: right;
+}
+.clearfix {
+    zoom: 1;
+}
+.clearfix:after, .clearfix:before {
+    content: "";
+    display: table;
+}
+.clearfix:after {
+    display: block;
+    content: "";
+    clear: both;
+}
+.clearfix:after {
+    visibility: hidden;
+    font-size: 0;
+    height: 0;
+}
+.bui-box {
+    display: block;
+    zoom: 1;
+}
+.bui-box:after, .bui-box:before {
+    content: "";
+    display: table;
+}
+.bui-left {
+    float: left;
+}
+.bui-box:after {
+    visibility: hidden;
+    font-size: 0;
+    height: 0;
+    display: block;
+    content: "";
+    clear: both;
+}
+.bui-box:after, .bui-box:before {
+    content: "";
+    display: table;
+}
+.bui-icon {
+    font-family: tticons!important;
+    font-size: 12px;
+    display: inline-block;
+    line-height: 1;
+    speak: none;
+    font-weight: 400;
+    font-variant: normal;
+    text-transform: none;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}

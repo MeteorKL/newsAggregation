@@ -27,18 +27,20 @@ const (
 	sessionID  = "sessionID"
 )
 
-func loginCheck(nickname string, password string) bool {
-	n, err := mgoHelper.MgoCount(collection, func(c *mgo.Collection) (int, error) {
-		return c.Find(bson.M{"nickname": nickname, "password": password}).Count()
+func loginCheck(nickname string, password string) map[string]interface{} {
+	user, err := mgoHelper.MgoSelectOne(collection, func(c *mgo.Collection) (map[string]interface{}, error) {
+		var r map[string]interface{}
+		err := c.Find(bson.M{"nickname": nickname, "password": password}).Select(bson.M{"nickname": 1, "tags": 1}).One(&r)
+		return r, err
 	})
 	if err != nil {
 		println("error: loginCheck", err.Error())
-		return false
+		return nil
 	}
-	if n == 1 {
-		return true
+	if user != nil {
+		return user
 	}
-	return false
+	return nil
 }
 
 func register(mail string, nickname string, password string) bool {

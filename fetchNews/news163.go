@@ -121,11 +121,12 @@ func fetchNewsFrom163Tag(tag string, tagurl string) {
 }
 
 func FetchNewsFrom163() {
+
 	fetchNewsFrom163Tag("国内", "guonei")
 	fetchNewsFrom163Tag("国际", "guoji")
 	fetchNewsFrom163Tag("军事", "war")
-	fetchNewsFrom163Tag("财经", "caijing")
-	fetchNewsFrom163Tag("科技", "keji")
-	fetchNewsFrom163Tag("体育", "tiyu")
-	fetchNewsFrom163Tag("娱乐", "yule")
+	fetchNewsFrom163Tag("财经", "money")
+	fetchNewsFrom163Tag("科技", "tech")
+	fetchNewsFrom163Tag("体育", "sports")
+	fetchNewsFrom163Tag("娱乐", "ent")
 }

@@ -6,7 +6,7 @@ import (
 	"gopkg.in/mgo.v2/bson"
 )
 
-func updateTag(nickname string, password string, tags []string) bool {
+func updateTags(nickname string, password string, tags []string) bool {
 	err := mgoHelper.MgoUpdateOne(collection, func(c *mgo.Collection) error {
 		return c.Update(
 			bson.M{"nickname": nickname, "password": password},

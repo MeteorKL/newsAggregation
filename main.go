@@ -10,6 +10,7 @@ import (
 	"github.com/MeteorKL/newsAggregation/userAPI"
 )
 
+// cd react && npm run build && cd ..
 func toutiao(hrefs []string) {
 	for i := 0; i < len(hrefs); i++ {
 		koala.GetRequest(hrefs[i])
@@ -30,9 +31,7 @@ func main() {
 		}
 	}()
 
-	http.Handle("/img/", http.StripPrefix("/img/", http.FileServer(http.Dir("img"))))
-	http.Handle("/css/", http.StripPrefix("/css/", http.FileServer(http.Dir("css"))))
-	http.Handle("/template/", http.StripPrefix("/template/", http.FileServer(http.Dir("template"))))
+	http.Handle("/dist/", http.StripPrefix("/dist/", http.FileServer(http.Dir("./react/dist"))))
 	// r := koala.GetRequest(URL)
 	// ioutil.WriteFile("test.html", r, 0666)
 	// ExampleScrape(URL)
@@ -42,7 +41,7 @@ func main() {
 	userAPI.UserHandlers()
 	feedAPI.FeedHandlers()
 
-	koala.RenderPath = "template/"
+	koala.RenderPath = "react/dist/"
 	koala.Get("/", func(p *koala.Params, w http.ResponseWriter, r *http.Request) {
 		koala.Render(w, "index.html", nil)
 	})
