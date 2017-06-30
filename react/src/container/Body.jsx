@@ -10,6 +10,12 @@ import ajax from '../utils/ajax.js'
 class Body extends React.Component {
   constructor(props) {
     super(props);
+    this.isLoading = 0;
+    this.handler = function(){
+      if (this.isLoading==0 && document.body.scrollTop + document.documentElement.clientHeight > document.body.scrollHeight - 800) {
+        this.loadNews(this.state.tag, false);
+      }
+    }
     this.tagIndex = {
       "推荐": 0,
       "国内": 1,
@@ -35,7 +41,8 @@ class Body extends React.Component {
     }
   }
 
-  loadNews(tag, top) {
+  loadNews(tag, top, callback) {
+    this.isLoading++;
     var param = "tag="+tag;
     // 当目前没有新闻的时候，加载历史新闻
     if (this.state.news[this.tagIndex[tag]].content.length==0) {
@@ -52,30 +59,47 @@ class Body extends React.Component {
       console.log(r);
       if (r.status==0) {
         if (top) {
-          console.log("topTime update");
+          console.log("topTime update", this.state.news[this.tagIndex[tag]].topTime, r.data.newTime);
           this.state.news.unshift.apply(this.state.news[this.tagIndex[tag]].content, r.data.content);
           this.state.news[this.tagIndex[tag]].topTime = r.data.newTime;
         } else {
-          console.log("bottomTime update");
+          console.log("bottomTime update", this.state.news[this.tagIndex[tag]].bottomTime, r.data.newTime);
           this.state.news.push.apply(this.state.news[this.tagIndex[tag]].content, r.data.content);
           this.state.news[this.tagIndex[tag]].bottomTime = r.data.newTime;
         }
         console.log(tag, this.state.news[this.tagIndex[tag]].topTime, this.state.news[this.tagIndex[tag]].bottomTime);
       }
       this.setState({news: this.state.news, tag: tag});
+      this.isLoading--;
     }, (error) => {
       console.error(error);
+      this.isLoading--;
     });
   }
 
   componentDidMount() {
     this.loadNews(this.state.tag, false);
-    document.addEventListener("scroll", () => {
-      if (document.body.scrollTop + document.documentElement.clientHeight > document.body.scrollHeight - 800) {
-        this.loadNews(this.state.tag, false);
-      }
-    })
+      document.addEventListener("scroll", this.handler.bind(this));
   }
+
+  getNowFormatDate(timestamp) {
+        var date = new Date(timestamp);
+        var seperator1 = "-";
+        var year = date.getFullYear();
+        var month = date.getMonth() + 1;
+        var strDate = date.getDate();
+        var hour = date.getHours();
+        var minute = date.getMinutes();
+        var second = date.getSeconds();
+        if (month >= 1 && month <= 9) {
+            month = "0" + month;
+        }
+        if (strDate >= 0 && strDate <= 9) {
+            strDate = "0" + strDate;
+        }
+        var currentdate = year + seperator1 + month + seperator1 + strDate + " " + hour + ":" + minute + ":" + second;
+        return currentdate;
+    }
 
   formatMsgTime (timespan) {
     var dateTime = new Date(timespan);
@@ -86,25 +110,23 @@ class Body extends React.Component {
     var hour = dateTime.getHours();
     var minute = dateTime.getMinutes();
     var second = dateTime.getSeconds();
-    var now = new Date();
-    var now_new = Date.parse(now.toDateString());  //typescript转换写法
+    var now_new = Date.parse(new Date());
 
     var milliseconds = 0;
     var timeSpanStr;
 
     milliseconds = now_new - timespan;
-
     if (milliseconds <= 1000 * 60 * 1) {
       timeSpanStr = '刚刚';
     }
     else if (1000 * 60 * 1 < milliseconds && milliseconds <= 1000 * 60 * 60) {
-      timeSpanStr = Math.round((milliseconds / (1000 * 60))) + '分钟前';
+      timeSpanStr = Math.floor((milliseconds / (1000 * 60))) + '分钟前';
     }
     else if (1000 * 60 * 60 * 1 < milliseconds && milliseconds <= 1000 * 60 * 60 * 24) {
-      timeSpanStr = Math.round(milliseconds / (1000 * 60 * 60)) + '小时前';
+      timeSpanStr = Math.floor(milliseconds / (1000 * 60 * 60)) + '小时前';
     }
     else if (1000 * 60 * 60 * 24 < milliseconds && milliseconds <= 1000 * 60 * 60 * 24 * 15) {
-      timeSpanStr = Math.round(milliseconds / (1000 * 60 * 60 * 24)) + '天前';
+      timeSpanStr = Math.floor(milliseconds / (1000 * 60 * 60 * 24)) + '天前';
     }
     else if (milliseconds > 1000 * 60 * 60 * 24 * 15 && year == now.getFullYear()) {
       timeSpanStr = month + '-' + day + ' ' + hour + ':' + minute;

@@ -2,12 +2,31 @@
 ## 目的
 任选一种技术实现一个新闻资讯收集、整理，进行个性化展示的网站
 
-## 基本功能 1. 定时到各主流新闻门户网站抓取信息  - 用户访问网站时能看到聚合的信息内容  - 实现用户注册、登录功能，用户注册时需要填写必要的信息并验证，如用户名、密码要求在 6 字  节以上，email 的格式验证，并保证用户名和 email 在系统中唯一。  - 用户登录后可以设置感兴趣的新闻资讯栏目，用户访问网站的展示页面会根据用户设置做出相应的调整- 实现一个 Android 或 iphone 客户端软件，功能同网站，但展示界面根据屏幕大小做 UI 的自适应调整，并能实现热点新闻推送- 具体一定的学习能力，能根据用户的使用习惯调整展现的内容
+## 基本功能 
+1. 定时到各主流新闻门户网站抓取信息  
+- 用户访问网站时能看到聚合的信息内容  
+- 实现用户注册、登录功能，用户注册时需要填写必要的信息并验证，如用户名、密码要求在 6 字  
+节以上，email 的格式验证，并保证用户名和 email 在系统中唯一。  
+- 用户登录后可以设置感兴趣的新闻资讯栏目，用户访问网站的展示页面会根据用户设置做出相应的调整
+- 实现一个 Android 或 iphone 客户端软件，功能同网站，但展示界面根据屏幕大小做 UI 的自适应调整，并能实现热点新闻推送
+- 具体一定的学习能力，能根据用户的使用习惯调整展现的内容
 
 ## 过程
-### 到各主流新闻门户网站抓取信息#### 信息来源的确定打开网易新闻，今日头条，新浪新闻等网站，查看源代码，可以找到每条新闻的dom  但是用爬虫获取内容的时候并不能找到对应的dom，经过分析后发现大部分页面是用js动态生成的，只有少部分新闻（比如右侧只显示一标题的新闻）是静态的经过一番思考和寻找，找到了Phantom这个工具，它可以模拟浏览器的运行，运行js动态生成页面。尝试抓取了新闻，发现能获取到内容但是速度太慢，需要几十秒，找了半天也没找到让它加速的方法，放弃之（后来想到可能是每次启动都需要初始化，这里可能花了非常多的时间，应该考虑让它启动了之后再不断的模拟打开网页）  打开chrome的调试器，查看Network，仔细测试和查看后发现前端会通过发请求来获取新的新闻，格式是json。这就好办多了，可以直接对这个链接发送请求来获取新闻  网易新闻  
-`http://temp.163.com/special/00804KVA/cm_yaowen_03.js?callback=data_callback`新浪新闻  `http://api.roll.news.sina.com.cn/zt_list?channel=news&cat_1=gnxw&cat_2==gdxw1||=gatxw||=zs-pl||=mtjj&level==1||=2&show_ext=1&show_all=1&show_num=22&tag=1&format=json&page=2&callback=newsloadercallback&_=1498536194155`今日头条  `http://www.toutiao.com/api/pc/feed/?category=news_tech&utm_source=toutiao&widen=1&max_behot_time=1498531911&max_behot_time_tmp=1498531911&tadrequire=true&as=A1E5F9A5717D362&cp=59511DA396923E1`
-#### 把信息转换成我们想要的格式并存入数据库中以网易新闻为例  
+### 到各主流新闻门户网站抓取信息
+#### 信息来源的确定
+打开网易新闻，今日头条，新浪新闻等网站，查看源代码，可以找到每条新闻的dom  
+但是用爬虫获取内容的时候并不能找到对应的dom，经过分析后发现大部分页面是用js动态生成的，只有少部分新闻（比如右侧只显示一标题的新闻）是静态的
+经过一番思考和寻找，找到了Phantom这个工具，它可以模拟浏览器的运行，运行js动态生成页面。尝试抓取了新闻，发现能获取到内容但是速度太慢，需要几十秒，找了半天也没找到让它加速的方法，放弃之（后来想到可能是每次启动都需要初始化，这里可能花了非常多的时间，应该考虑让它启动了之后再不断的模拟打开网页）  
+打开chrome的调试器，查看Network，仔细测试和查看后发现前端会通过发请求来获取新的新闻，格式是json。这就好办多了，可以直接对这个链接发送请求来获取新闻  
+网易新闻  
+`http://temp.163.com/special/00804KVA/cm_yaowen_03.js?callback=data_callback`  
+新浪新闻  
+`http://api.roll.news.sina.com.cn/zt_list?channel=news&cat_1=gnxw&cat_2==gdxw1||=gatxw||=zs-pl||=mtjj&level==1||=2&show_ext=1&show_all=1&show_num=22&tag=1&format=json&page=2&callback=newsloadercallback&_=1498536194155`  
+今日头条  
+`http://www.toutiao.com/api/pc/feed/?category=news_tech&utm_source=toutiao&widen=1&max_behot_time=1498531911&max_behot_time_tmp=1498531911&tadrequire=true&as=A1E5F9A5717D362&cp=59511DA396923E1`  
+
+#### 把信息转换成我们想要的格式并存入数据库中
+以网易新闻为例  
 获取到的新闻的格式是这样的  
 
 ```go
@@ -133,4 +152,4 @@ db.user.ensureIndex({ nickname: 1 },
 )
 db.shutdownServer()
 ```
-
+
