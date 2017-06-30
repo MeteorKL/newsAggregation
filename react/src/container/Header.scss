@@ -1,11 +1,15 @@
+$height: 40px;
 .Header {
   .topbar {
     a {
       color: #fff;
       padding: 0 10px;
+      img {
+        height: $height;
+      }
     }
-    height: 34px;
-    line-height: 34px;
+    height: $height;
+    line-height: $height;
     background: #222;
     font-size: 14px;
     color: #fff;
@@ -19,7 +23,7 @@
     }
     .item .userbox {
       width: 130px;
-      height: 34px;
+      height: $height;
       position: relative;
       font-size: 14px;
       color: #fff;
@@ -37,7 +41,7 @@
         width: 100%;
         position: absolute;
         display: block;
-        top: 34px;
+        top: $height;
         right: 0;
         border: 1px solid #d9d9d9;
         border-top: none;
@@ -48,8 +52,8 @@
           cursor: pointer;
           display: block;
           width: auto;
-          height: 42px;
-          line-height: 42px;
+          height: $height;
+          line-height: $height;
           color: #999;
           white-space: nowrap;
           text-overflow: ellipsis;

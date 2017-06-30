@@ -1,21 +1,19 @@
-exports.Get = (url) => {
-  return new Promise(function(resolve, reject) {
-    const xhr = new XMLHttpRequest();
-    xhr.open('GET', url);
-    xhr.send(null);
-    xhr.addEventListener('readystatechange', function() {
-      if (xhr.readyState === 4 && xhr.status === 200) {
-        try {
-          const data = JSON.parse(xhr.responseText);
-          resolve(data);
-        } catch (e) {
-          reject(e);
-        }
+exports.Get = (url,callback,failback) => {
+  const xhr = new XMLHttpRequest();
+  xhr.open('GET', url);
+  xhr.send(null);
+  xhr.addEventListener('readystatechange', () => {
+    if (xhr.readyState === 4 && xhr.status === 200) {
+      try {
+        const data = JSON.parse(xhr.responseText);
+        callback(data);
+      } catch (e) {
+        failback(e);
       }
-    });
-    xhr.addEventListener('error', function(error) {
-      reject(error);
-    });
+    }
+  });
+  xhr.addEventListener('error', (error) => {
+    failback(error);
   });
 }
 
@@ -44,24 +42,22 @@ function postDataFormat(obj){
     }
 }
 
-exports.Post = (url, query) => {
-  return new Promise(function(resolve, reject) {
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', url, true);
-    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    xhr.send(query);
-    xhr.addEventListener('readystatechange', function() {
-      if (xhr.readyState === 4 && xhr.status === 200) {
-        try {
-          const data = JSON.parse(xhr.responseText);
-          resolve(data);
-        } catch (e) {
-          reject(e);
-        }
+exports.Post = (url, query,callback,failback) => {
+  const xhr = new XMLHttpRequest();
+  xhr.open('POST', url, true);
+  xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+  xhr.send(query);
+  xhr.addEventListener('readystatechange', () => {
+    if (xhr.readyState === 4 && xhr.status === 200) {
+      try {
+        const data = JSON.parse(xhr.responseText);
+        callback(data);
+      } catch (e) {
+        failback(e);
       }
-    });
-    xhr.addEventListener('error', function(error) {
-      reject(error);
-    });
+    }
+  });
+  xhr.addEventListener('error', (error) => {
+    failback(error);
   });
 }

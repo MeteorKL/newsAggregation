@@ -1,6 +1,7 @@
 package main
 
 import (
+	"mime"
 	"net/http"
 	"time"
 
@@ -30,6 +31,8 @@ func main() {
 			}
 		}
 	}()
+
+	mime.AddExtensionType(".apk", "application/vnd.android")
 
 	http.Handle("/dist/", http.StripPrefix("/dist/", http.FileServer(http.Dir("./react/dist"))))
 	// r := koala.GetRequest(URL)

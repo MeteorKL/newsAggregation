@@ -1,6 +1,7 @@
 package feedAPI
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -11,12 +12,21 @@ import (
 	"github.com/MeteorKL/newsAggregation/mgoHelper"
 )
 
-// Feed api has params behot_time, show_num, tag, source
+// Feed api has params topTime, bottomTime, show_num, tag, source
 func FeedHandlers() {
 	koala.Get("/api/feed", func(p *koala.Params, w http.ResponseWriter, r *http.Request) {
 		findM := make(bson.M)
 		if arr, ok := p.ParamGet["tag"]; ok {
-			if arr[0] != "" {
+			if arr[0] == "推荐" {
+				if session := koala.PeekSession(r, "sessionID"); session != nil {
+					tags := session.Values["tags"]
+					if tags, ok := tags.([]interface{}); ok && len(tags) != 0 {
+						findM["tag"] = bson.M{
+							"$in": tags,
+						}
+					}
+				}
+			} else if arr[0] != "" {
 				findM["tag"] = arr[0]
 			}
 		}
@@ -51,6 +61,7 @@ func FeedHandlers() {
 				println("error: ParamGet show_num is not int", err.Error())
 			}
 		}
+		fmt.Print(findM)
 		news, _ := mgoHelper.MgoSelectAll("news", func(c *mgo.Collection) ([]map[string]interface{}, error) {
 			var r []map[string]interface{}
 			err := c.Find(findM).Sort("-time").Limit(show_num).All(&r)

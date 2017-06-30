@@ -3,11 +3,6 @@ import { connect } from 'react-redux'
 import { hashHistory } from 'react-router'
 
 import './main.scss'
-import GameTab from './GameTab/GameTab'
-import UserTab from './UserTab/UserTab'
-import ws from '../utils/websocket'
-import Game from './GameTab/Game.jsx'
-import SettingTab from './SettingTab/SettingTab.jsx'
 import Header from './Header.jsx'
 import Body from './Body.jsx'
 

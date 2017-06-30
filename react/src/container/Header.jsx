@@ -51,11 +51,11 @@ class Header extends React.Component {
     }
 
   componentDidMount() {
-    ajax.Get("/api/checkLogin").then((r) => {
+    ajax.Get("/api/checkLogin", (r) => {
       if (r.status==0) {
         this.setState({login: true, nickname: r.data.nickname, tags: r.data.tags, userlayer: false});
       }
-    }).catch((error) => {
+    }, (error) => {
       console.error(error);
     });
   }
@@ -72,14 +72,14 @@ class Header extends React.Component {
       return
     }
     password = crypto.createHash('md5').update(password).digest('hex');
-    ajax.Get("/api/login?nickname="+nickname+"&password="+password).then((r) => {
+    ajax.Get("/api/login?nickname="+nickname+"&password="+password, (r) => {
       if (r.status==0) {
         console.log(r)
         this.setState({login: true, nickname: r.data.nickname, tags: r.data.tags, userlayer: false});
       } else {
         callback(r);
       }
-    }).catch((error) => {
+    }, (error) => {
       console.error(error);
     });
   }
@@ -109,18 +109,18 @@ class Header extends React.Component {
     }
     password = crypto.createHash('md5').update(password).digest('hex');
     console.log(password);
-    ajax.Get("/api/register?mail="+mail+"&nickname="+nickname+"&password="+password).then((r) => {
+    ajax.Get("/api/register?mail="+mail+"&nickname="+nickname+"&password="+password, (r) => {
       callback(r);
-    }).catch((error) => {
+    }, (error) => {
       console.error(error);
     });
   }
   logout() {
-    ajax.Get("/api/logout").then((r) => {
+    ajax.Get("/api/logout", (r) => {
       if (r.status==0) {
         this.setState({login: false, nickname: "", tags: []});
       }
-    }).catch((error) => {
+    }, (error) => {
       console.error(error);
     });
   }
@@ -132,10 +132,10 @@ class Header extends React.Component {
         param += "&tags="+doms[i].value;
       }
     }
-    ajax.Get("/api/updateTags?"+param.slice(1)).then((r) => {
+    ajax.Get("/api/updateTags?"+param.slice(1), (r) => {
       callback(r);
       this.setState({tags: r.data});
-    }).catch((error) => {
+    }, (error) => {
       console.error(error);
     });
   }
@@ -144,7 +144,7 @@ class Header extends React.Component {
       <div className="Header">
         <div className="topbar">
         <div className="left clearfix">
-          <a href="/download" >下载APP</a>
+            <a className="logo" href="/"><img src="/dist/img/topnews.png"/></a>
         </div>
         <div className="right">
           <ul className="item clearfix">

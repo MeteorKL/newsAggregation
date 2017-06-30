@@ -54,9 +54,13 @@ var lastFecthTime int64
 func fetchNewsFrom163Tag(tag string, tagurl string) {
 	URL := "http://temp.163.com/special/00804KVA/cm_" + tagurl + ".js?callback=data_callback"
 	input := koala.GetRequest(URL)
+
 	output, err := iconv.ConvertString(string(input), "gb2312", "utf-8")
 	if err != nil {
+		println(URL)
 		println("error: iconv.ConvertString()", err.Error())
+		// println(string(output))
+		return
 	}
 	var data Data163
 	if len(output) < 14 {

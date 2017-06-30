@@ -36,19 +36,19 @@ class Body extends React.Component {
   }
 
   loadNews(tag, top) {
-    var param;
+    var param = "tag="+tag;
     // 当目前没有新闻的时候，加载历史新闻
     if (this.state.news[this.tagIndex[tag]].content.length==0) {
       top = false;
     }
     if (top) {
       var topTime = this.state.news[this.tagIndex[tag]].topTime;
-      var param = "tag="+(tag=="推荐"?"":tag) + "&topTime="+topTime;
+      param += "&topTime="+topTime;
     } else {
       var bottomTime = this.state.news[this.tagIndex[tag]].bottomTime;
-      var param = "tag="+(tag=="推荐"?"":tag) + "&bottomTime="+bottomTime;
+      param += "&bottomTime="+bottomTime;
     }
-    ajax.Get("/api/feed?"+param).then((r) => {
+    ajax.Get("/api/feed?"+param, (r) => {
       console.log(r);
       if (r.status==0) {
         if (top) {
@@ -63,7 +63,7 @@ class Body extends React.Component {
         console.log(tag, this.state.news[this.tagIndex[tag]].topTime, this.state.news[this.tagIndex[tag]].bottomTime);
       }
       this.setState({news: this.state.news, tag: tag});
-    }).catch((error) => {
+    }, (error) => {
       console.error(error);
     });
   }
@@ -71,7 +71,7 @@ class Body extends React.Component {
   componentDidMount() {
     this.loadNews(this.state.tag, false);
     document.addEventListener("scroll", () => {
-      if (document.body.scrollTop + document.documentElement.clientHeight > document.body.scrollHeight - 400) {
+      if (document.body.scrollTop + document.documentElement.clientHeight > document.body.scrollHeight - 800) {
         this.loadNews(this.state.tag, false);
       }
     })
@@ -118,9 +118,6 @@ class Body extends React.Component {
     return (
       <div className="container">
         <div className="left channel">
-          <div className="wchannel">
-            <a className="logo" href="/"><img src="/dist/img/topnews.png"/></a>
-          </div>
           {this.tags.map((tag, index)=>{
             return (
               <li onClick={()=>{this.loadNews(tag, true);}} key={index}> 
@@ -156,7 +153,7 @@ class Body extends React.Component {
                   </div>
                   <div className="bui-box footer-bar">
                     <div className="bui-left footer-bar-left">
-                      <a href="search/?keyword=%E6%97%B6%E6%94%BF" target="_blank" className="footer-bar-action tag tag-style-other">{news.tag}</a> 
+                      <a onClick={()=>{this.loadNews(news.tag, true);}} target="_blank" className="footer-bar-action tag tag-style-other">{news.tag}</a> 
                       <a className="footer-bar-action source">{news.source}</a> 
                       <span className="footer-bar-action">{time}</span>
                     </div>
